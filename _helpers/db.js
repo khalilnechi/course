@@ -31,7 +31,7 @@ mongoose.connect(uri, connectionOptions)
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    Account: require('../entity/entity.model'),
+    Course: require('../courses/course.model'),
     RefreshToken: require('../entity/refresh-token.model'),
     isValidId
 };
