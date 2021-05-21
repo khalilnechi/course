@@ -25,7 +25,7 @@
  
  
  // api routes
- app.use('/', require('./entity/entity.routes'));
+ app.use('/', require('./courses/courses.routes'));
  // Health Check route
  app.use('/healthz', require('./_middleware/healthcheck.route'));
  // swagger docs route

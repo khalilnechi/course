@@ -2,15 +2,15 @@ require('dotenv').config();
 const winston = require("winston");
 require('winston-mongodb');
 
+const config = require('./../config_db.json');
 
-//connect to database
 
 const host = process.env.DB_HOST || config.DB_HOST;
 const port = process.env.DB_PORT || config.DB_PORT;
 const user = process.env.DB_USER || config.DB_USER;
 const pass = process.env.DB_PASS || config.DB_PASS;
 const database = process.env.DB_NAME + "-" + process.env.NODE_ENV || config.DB_NAME + "-" + process.env.NODE_ENV;
-
+console.log(database)
 const uri=`mongodb://${user}:${pass}@${host}:${port}/${database}`
 console.log("winston:"+uri)
 timeStamp = () => {
