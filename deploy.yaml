@@ -17,23 +17,23 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: course-deployment
+  name: course-dev-deployment
   namespace: dev
   labels:
-     app: course-app
+     app: course-dev-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-       app: course-app
+       app: course-dev-app
   template:
     metadata:
       labels:
-         app: course-app
+         app: course-dev-app
     spec:
       containers:
-      - name: course
-        image: registry.gitlab.com/sof-learning/course:latest
+      - name: course-dev
+        image: registry.gitlab.com/sof-learning/course-dev:latest
         resources:
           requests:
             memory: "256Mi"
@@ -84,14 +84,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: course-svc
+  name: course-dev-svc
   namespace: dev
   labels:
-    app: course-app
+    app: course-dev-app
 spec:
   type: LoadBalancer
   selector:
-     app: course-app
+     app: course-dev-app
   ports:
   - name: http
     port: 3100
@@ -106,21 +106,21 @@ metadata:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: "letsencrypt"
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
-  name: course-ingress
+  name: course-dev-ingress
   namespace: dev
 spec:
   tls:
     - hosts:
-        - course.canbe.fun
-      secretName: course-tls
+        - course-dev.canbe.fun
+      secretName: course-dev-tls
   rules:
-    - host: course.canbe.fun
+    - host: course-dev.canbe.fun
       http:
         paths:
           - pathType: Prefix
             path: /
             backend:
               service:
-                name: course-svc
+                name: course-dev-svc
                 port:
                   number: 3100

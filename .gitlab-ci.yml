@@ -22,4 +22,4 @@ Staging:
     - export KUBECONFIG=content # Put the config content in an environment variable
   script:
     - kubectl apply -f deploy.yaml
-    - kubectl patch deployment course-deployment -n dev -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+    - kubectl patch deployment course-dev-deployment -n dev -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
