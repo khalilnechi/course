@@ -3,6 +3,7 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const courseService = require('./course.service');
+const authorize = require('../_middleware/authorize')
 /****************************************************************************************** */
 /****************************************************************************************** */
 /****************************************************************************************** */
@@ -10,7 +11,7 @@ const courseService = require('./course.service');
 // routes
 router.get('/test', test);
 router.post('/title',getByTitle);
-router.get('/', getAll);
+router.get('/',getAll);
 router.get('/:id', getById);
 router.post('/', createSchema, create);
 router.put('/:id', updateSchema, update);

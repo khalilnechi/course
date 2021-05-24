@@ -10,7 +10,7 @@ router.get('/', async (_req, res, _next) => {
 	const healthcheck = {
 		uptime: process.uptime(),
 		message: 'OK',
-		service: 'Backend',
+		service: 'Course Api',
 		milestone: new Date().toLocaleString("en-US", { timeZoneName: "short" }), // 12/9/2019, 10:30:15 AM CST
 		timestamp: Date.now(),
 		db_status: mongoose.connection.readyState
