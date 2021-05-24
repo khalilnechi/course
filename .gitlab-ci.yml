@@ -1,0 +1,25 @@
+stages:
+    - Build
+    - Deploy
+Packaging:
+  stage: Build
+  image: docker
+  tags:
+    - docker
+  services:
+    - docker:dind # Let docker engine work inside a docker image
+
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/sof-learning/course .
+    - docker push registry.gitlab.com/sof-learning/course
+
+Staging:
+  image: dtzar/helm-kubectl
+  stage: Deploy
+  before_script:
+    - echo "${KUBECONFIG}" > content # Get the KUBECONFIG (GitLab variable)
+    - export KUBECONFIG=content # Put the config content in an environment variable
+  script:
+    - kubectl apply -f deploy.yaml
+    - kubectl patch deployment course-deployment -n dev -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"

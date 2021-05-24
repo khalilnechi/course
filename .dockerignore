@@ -1,0 +1,9 @@
+node_modules/
+test/
+.nyc_output/
+Dockerfile
+.gitignore
+.gitlab-ci.yml
+deploy.yaml
+.dockerignore
+.git
