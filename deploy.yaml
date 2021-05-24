@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: course-dev
-        image: registry.gitlab.com/sof-learning/course-dev:latest
+        image: registry.gitlab.com/sof-learning/course:latest
         resources:
           requests:
             memory: "256Mi"
