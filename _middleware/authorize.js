@@ -2,7 +2,7 @@ const db = require('./../_helpers/db');
 var fs = require('fs');
 var jwt =require('jsonwebtoken');
 Logger=require('../_helpers/logger');
-logger=new Logger('Backend');
+logger=new Logger('Api courses');
 
 var public_key=fs.readFileSync('./public-key.txt','utf8');
 module.exports = authorize;
@@ -19,11 +19,12 @@ function authorize(roles = []) {
     return [
         // authenticate JWT token and attach user to request object (req.user)
         async (req, res, next) => {
-
-            const authHeader = req.headers['authorization']
             
+            const authHeader = req.headers['authorization']
 
             const token = authHeader && authHeader.split(' ')[1]
+            console.log("token="+authHeader)
+
             if (token == null) {
                 logger.error("JWT token not existing")
                 return res.sendStatus(401) 

@@ -32,6 +32,7 @@ mongoose.Promise = global.Promise;
 
 module.exports = {
     Course: require('../courses/course.model'),
+    Account: require('../courses/account.model'),
     RefreshToken: require('./refresh-token.model'),
     isValidId
 };

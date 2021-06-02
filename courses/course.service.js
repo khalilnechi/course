@@ -14,12 +14,23 @@ module.exports = {
     add_tag,
     remove_tag,
     set_trainers,
-    remove_trainer
+    remove_trainer,
+    getMyCourses
 };
 
 
 async function getAll() {
     const courses = await db.Course.find();
+    return courses.map(x => basicDetails(x));
+}
+
+async function getMyCourses(idAccount) {
+    const courses = await db.Course.find({
+        $or: [
+            { trainers: idAccount },
+            { owner: idAccount }
+        ]
+    });
     return courses.map(x => basicDetails(x));
 }
 
@@ -37,13 +48,13 @@ async function getByTitle(title) {
 
 async function set_trainers(idCourse, accounts) {
     const course = await getCourse(idCourse);
-/* 
+    /* 
+    
+       if(course.trainers.indexOf(accountId)!=-1)
+        throw "Trainer "+accountId+" already exist"; */
 
-   if(course.trainers.indexOf(accountId)!=-1)
-    throw "Trainer "+accountId+" already exist"; */
-    
-    
-    course.trainers=accounts
+
+    course.trainers = accounts
     await course.save();
 
     return basicDetails(course);
@@ -51,11 +62,11 @@ async function set_trainers(idCourse, accounts) {
 
 async function remove_trainer(idCourse, accountId) {
     const course = await getCourse(idCourse);
-    
-   if(course.trainers.indexOf(accountId)==-1)
-    throw "Trainer "+accountId+" already not exist";
 
-    
+    if (course.trainers.indexOf(accountId) == -1)
+        throw "Trainer " + accountId + " already not exist";
+
+
     course.trainers.remove(accountId)
     await course.save();
 
@@ -65,8 +76,8 @@ async function remove_trainer(idCourse, accountId) {
 async function add_tag(idCourse, tag) {
     const course = await getCourse(idCourse);
 
-   if(course.tags.indexOf(tag)!=-1)
-    throw "tag "+tag+" already exist";
+    if (course.tags.indexOf(tag) != -1)
+        throw "tag " + tag + " already exist";
 
     course.tags.push(tag)
     await course.save();
@@ -75,11 +86,11 @@ async function add_tag(idCourse, tag) {
 }
 async function remove_tag(idCourse, tag) {
     const course = await getCourse(idCourse);
-    
-   if(course.tags.indexOf(tag)==-1)
-    throw "tag "+tag+" already not exist";
 
-    
+    if (course.tags.indexOf(tag) == -1)
+        throw "tag " + tag + " already not exist";
+
+
     course.tags.remove(tag)
     await course.save();
 
@@ -89,16 +100,16 @@ async function remove_tag(idCourse, tag) {
 
 async function add_rating(idCourse, params) {
     const course = await getCourse(idCourse);
-    
+
     // copy params to course and save
-   // Object.assign(course, params);
-   console.log(course.rating)
-   var ratingObject=course.rating.find(ratingObject=>ratingObject.accountId==params.accountId)
-   console.log(ratingObject)
-   if(ratingObject)
-    ratingObject.rate=params.rate;
-   else 
-    course.rating.push(params)
+    // Object.assign(course, params);
+    console.log(course.rating)
+    var ratingObject = course.rating.find(ratingObject => ratingObject.accountId == params.accountId)
+    console.log(ratingObject)
+    if (ratingObject)
+        ratingObject.rate = params.rate;
+    else
+        course.rating.push(params)
     await course.save();
 
     return basicDetails(course);
@@ -157,7 +168,7 @@ async function getCourseByTitle(title) {
 }
 
 function basicDetails(course) {
-    const { id, title, topic, owner, created,tags } = course;
+    const { id, title, topic, owner, created, tags } = course;
     //return { id, title, topic, owner, created,tags }
     return course;
 }

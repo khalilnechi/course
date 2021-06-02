@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     title: { type: String, required: true },
     topic: { type: String, required: true },
-    owner: { type: String, required: true },
+    owner: { type: Schema.Types.ObjectId, required: true },
     active: { type: Boolean, required: true ,default:false},
     trainers:[Schema.Types.ObjectId],
     attachments: { type: String, },
