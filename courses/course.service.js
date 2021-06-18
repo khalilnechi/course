@@ -15,7 +15,8 @@ module.exports = {
     remove_tag,
     set_trainers,
     remove_trainer,
-    getMyCourses
+    getMyCourses,
+    set_sections
 };
 
 
@@ -55,6 +56,16 @@ async function set_trainers(idCourse, accounts) {
 
 
     course.trainers = accounts
+    await course.save();
+
+    return basicDetails(course);
+}
+async function set_sections(idCourse, sections) {
+    const course = await getCourse(idCourse);
+
+    course.sections = sections
+    
+    course.updated = Date.now();
     await course.save();
 
     return basicDetails(course);

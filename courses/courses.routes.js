@@ -22,6 +22,7 @@ router.put('/remove_tag/:id', remove_tag);
 //router.put('/add_comment/:id', updateSchema, update);
 router.put('/set_trainers/:id', set_trainers);
 router.put('/remove_trainer/:id', remove_trainer);
+router.put('/set_sections/:id', set_sections);
 router.delete('/:id', _delete);
 module.exports = router;
 /****************************************************************************************** */
@@ -82,6 +83,19 @@ function remove_trainer(req,res,next) {
             console.log("request = "+JSON.stringify(req.body));
             console.log("=> Course updated");
             res.json(course)})
+        .catch(next);
+}
+
+function set_sections(req,res,next) {
+    courseService.set_sections(req.params.id, req.body.sections)
+        .then(course => {
+            console.log("request = "+JSON.stringify(req.body));
+            console.log("=> Sections created");
+            
+            res.status(200).json({
+                message:"sections created"
+            })})
+            
         .catch(next);
 }
 function add_tag(req,res,next) {

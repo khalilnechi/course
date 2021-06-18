@@ -7,6 +7,11 @@ const schema = new Schema({
     owner: { type: Schema.Types.ObjectId, required: true },
     active: { type: Boolean, required: true ,default:false},
     trainers:[Schema.Types.ObjectId],
+    sections:[{
+        addedBy: { type: Schema.Types.ObjectId, required: true },
+        name:{ type: String, required: true },
+        content:String
+    }],
     attachments: { type: String, },
     rating: [{
         accountId: { type: Schema.Types.ObjectId, required: true },
