@@ -62,7 +62,11 @@ async function set_trainers(idCourse, accounts) {
 }
 async function set_sections(idCourse, sections) {
     const course = await getCourse(idCourse);
-
+    sections.forEach(section => {
+        console.log(section.toUpdate)
+        if(section.toUpdate===true)
+            section.updated = Date.now()
+    });
     course.sections = sections
     
     course.updated = Date.now();

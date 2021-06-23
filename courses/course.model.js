@@ -10,7 +10,9 @@ const schema = new Schema({
     sections:[{
         addedBy: { type: Schema.Types.ObjectId, required: true },
         name:{ type: String, required: true },
-        content:String
+        content:String,
+        created:{ type: Date, default: Date.now },
+        updated:Date
     }],
     attachments: { type: String, },
     rating: [{
