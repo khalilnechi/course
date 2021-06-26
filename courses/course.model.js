@@ -33,6 +33,17 @@ const schema = new Schema({
         content: String,
         created: { type: Date, default: Date.now },
     }],
+    visits:[
+        {
+            accountId: { type: Schema.Types.ObjectId, required: true },
+            lastVisitedSection:String, //Last section that the user have visited
+            occurences:[
+                {
+                    created:{ type: Date, default: Date.now },
+                }
+            ]
+        }
+    ]
 });
 
 

@@ -23,7 +23,7 @@ function authorize(roles = []) {
             const authHeader = req.headers['authorization']
 
             const token = authHeader && authHeader.split(' ')[1]
-            console.log("token="+authHeader)
+            //console.log("token="+authHeader)
 
             if (token == null) {
                 logger.error("JWT token not existing")
@@ -31,7 +31,7 @@ function authorize(roles = []) {
             }     
             var legit=jwt.verify(token,public_key,{});
             req.user=legit;
-            console.log(legit)
+            //console.log(legit)
            
             next();
         }
@@ -55,6 +55,7 @@ function authorize(roles = []) {
             // authentication and authorization successful
             req.user.role = account.role;
             req.user.ownsToken = token => !!refreshTokens.find(x => x.token === token);
+            console.log("-----------------------> Authorized ")
             next();
         }
 

@@ -35,9 +35,51 @@ async function getMyCourses(idAccount) {
     return courses.map(x => basicDetails(x));
 }
 
-async function getById(id) {
-    const course = await getCourse(id);
-    return basicDetails(course);
+async function getById(idCourse, user) {
+    const course = await getCourse(idCourse);
+    //console.log(course.trainers)
+    //console.log(typeof user.id)
+    //console.log("course.owner=" +typeof course.owner)
+    let isAdminOfCourse = user.id === course.owner.toString()
+    console.log("isAdminOfCourse=" + isAdminOfCourse)
+
+    //Storage of visits
+    if (user !== undefined && !isAdminOfCourse && course.trainers.indexOf(user.id) === -1) {
+        //console.log(course.visits)
+        console.log("getting course by visitor with id " + user.id)
+        console.log("course.visits.find(visit=>visit.accountId===user.id)")
+        let visit = course.visits.find(visit => visit.accountId.toString() === user.id)
+
+        if (visit === undefined)//first time visit
+            course.visits.push({
+                accountId: user.id,
+                occurences: [
+                    { created: Date.now() }
+                ]
+            })
+        else {
+            // We have to calculate delay between visits
+            let lastVisit = visit.occurences[visit.occurences.length - 1].created
+            //console.log(lastVisit.getTime())
+            //console.log(Date.now())
+            var now = new Date(Date.now());
+            let delay = (now - lastVisit.getTime());
+
+            console.log("#        now :" + now.toTimeString())
+            console.log("# last visit :" + lastVisit.toTimeString())
+            let delayInMinutes = Math.round(delay / 60000)
+            console.log(delayInMinutes + " minutes")
+
+            if (delayInMinutes >= 10)
+                visit.occurences.push({
+                    created: Date.now()
+                })
+        }
+
+        await course.save();
+    }
+
+    return course;
 }
 
 async function getByTitle(title) {
@@ -64,11 +106,11 @@ async function set_sections(idCourse, sections) {
     const course = await getCourse(idCourse);
     sections.forEach(section => {
         console.log(section.toUpdate)
-        if(section.toUpdate===true)
+        if (section.toUpdate === true)
             section.updated = Date.now()
     });
     course.sections = sections
-    
+
     course.updated = Date.now();
     await course.save();
 
@@ -156,7 +198,6 @@ async function update(idCourse, params) {
 
     // copy params to course and save
     Object.assign(course, params);
-    course.tags.push("samir")
     course.updated = Date.now();
     await course.save();
 

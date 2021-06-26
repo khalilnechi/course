@@ -10,20 +10,20 @@ const authorize = require('../_middleware/authorize')
 /****************************************************************************************** */
 // routes
 router.get('/test', test);
-router.post('/title',getByTitle);
-router.get('/',getAll);
+router.post('/title',authorize(),getByTitle);
+router.get('/',authorize(),getAll);
 router.get('/getMyCourses',authorize(),getMyCourses);
-router.get('/:id', getById);
+router.get('/:id',authorize(), getById);
 router.post('/', createSchema, create);
-router.put('/:id', updateSchema, update);
+router.put('/:id',authorize(), updateSchema, update);
 router.put('/add_rating/:id', addRatingSchema, add_rating);
 router.put('/add_tag/:id', add_tag);
 router.put('/remove_tag/:id', remove_tag);
 //router.put('/add_comment/:id', updateSchema, update);
-router.put('/set_trainers/:id', set_trainers);
-router.put('/remove_trainer/:id', remove_trainer);
-router.put('/set_sections/:id', set_sections);
-router.delete('/:id', _delete);
+router.put('/set_trainers/:id',authorize(), set_trainers);
+router.put('/remove_trainer/:id',authorize(), remove_trainer);
+router.put('/set_sections/:id',authorize(), set_sections);
+router.delete('/:id',authorize(), _delete);
 module.exports = router;
 /****************************************************************************************** */
 /****************************************************************************************** */
@@ -62,8 +62,7 @@ function getById(req, res, next) {
     /* if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Unauthorized' });
     } */
-
-    courseService.getById(req.params.id)
+    courseService.getById(req.params.id,req.user)
         .then(course => course ? res.json(course) : res.sendStatus(404))
         .catch(next);
 }
