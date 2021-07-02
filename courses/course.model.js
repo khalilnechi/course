@@ -28,6 +28,7 @@ const schema = new Schema({
     tags: [String], // web,development, front
     created: { type: Date, default: Date.now },
     updated: Date,
+    url_picture:String,
     chat: [{
         accountId: { type: Schema.Types.ObjectId, required: true },
         content: String,

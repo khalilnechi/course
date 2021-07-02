@@ -22,7 +22,7 @@ module.exports = {
 
 async function getAll() {
     const courses = await db.Course.find();
-    return courses.map(x => basicDetails(x));
+    return courses.map(x => basicDetailsCourses(x));
 }
 
 async function getMyCourses(idAccount) {
@@ -32,7 +32,7 @@ async function getMyCourses(idAccount) {
             { owner: idAccount }
         ]
     });
-    return courses.map(x => basicDetails(x));
+    return courses.map(x => basicDetailsCourses(x));
 }
 
 async function getById(idCourse, user) {
@@ -227,4 +227,10 @@ function basicDetails(course) {
     const { id, title, topic, owner, created, tags } = course;
     //return { id, title, topic, owner, created,tags }
     return course;
+}
+
+function basicDetailsCourses(course) {
+    const { _id, title, topic, owner, created, updated, tags, url_picture } = course;
+   // return course;
+    return { _id, title, topic, owner, created, updated, tags, url_picture };
 }
