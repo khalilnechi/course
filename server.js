@@ -18,7 +18,7 @@
  // app.use(cors());
  var corsOptions = { 
      credentials: true,
-     origin: ['http://localhost:4200','https://dev.canbe.fun','http://localhost:3000'] // list of allowed clients 
+    // origin: ['http://localhost:4200','https://dev.canbe.fun','http://localhost:3000'] // list of allowed clients 
      //methods: "GET, PUT" // list of allowed methods (used in the microservice of file upload)
  }
  app.use(cors(corsOptions));

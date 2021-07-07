@@ -16,10 +16,29 @@ module.exports = {
     set_trainers,
     remove_trainer,
     getMyCourses,
-    set_sections
+    set_sections,
+    delete_chat
 };
 
 
+
+async function delete_chat(idCourse, user) {
+    console.log("delete_chat" + idCourse)
+
+    const course = await getCourse(idCourse);
+    // let isAdminOfCourse = user.id === course.owner.toString()
+
+    /*  if (user !== undefined && !isAdminOfCourse && course.trainers.indexOf(user.id) === -1)
+         throw "You don't have access to delete chat messages of this course";
+     else { */
+    let nbMsg = course.chat.length
+    console.log(course)
+    course.chat = [];
+    await course.save();
+    /* } */
+
+    return "deleted " + nbMsg + " messages";
+}
 async function getAll() {
     const courses = await db.Course.find();
     return courses.map(x => basicDetailsCourses(x));
@@ -204,9 +223,16 @@ async function update(idCourse, params) {
     return basicDetails(course);
 }
 
-async function _delete(idCourse) {
+async function _delete(idCourse, user) {
     const course = await getCourse(idCourse);
-    await course.remove();
+    console.log(user.role)
+    if (user.id === course.owner.toString() || user.role==="Admin") {
+
+        await course.remove();
+        return 'Course deleted successfully';
+    }
+    else
+        throw "You don't have access to delete this course"
 }
 /*-------------------------------------------------------------------------------------------*/
 // helper functions
@@ -231,6 +257,6 @@ function basicDetails(course) {
 
 function basicDetailsCourses(course) {
     const { _id, title, topic, owner, created, updated, tags, url_picture } = course;
-   // return course;
+    // return course;
     return { _id, title, topic, owner, created, updated, tags, url_picture };
 }
