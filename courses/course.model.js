@@ -5,14 +5,14 @@ const schema = new Schema({
     title: { type: String, required: true },
     topic: { type: String, required: true },
     owner: { type: Schema.Types.ObjectId, required: true },
-    active: { type: Boolean, required: true ,default:false},
-    trainers:[Schema.Types.ObjectId],
-    sections:[{
+    active: { type: Boolean, required: true, default: false },
+    trainers: [Schema.Types.ObjectId],
+    sections: [{
         addedBy: { type: Schema.Types.ObjectId, required: true },
-        name:{ type: String, required: true },
-        content:String,
-        created:{ type: Date, default: Date.now },
-        updated:Date
+        name: { type: String, required: true },
+        content: String,
+        created: { type: Date, default: Date.now },
+        updated: Date
     }],
     attachments: { type: String, },
     rating: [{
@@ -28,23 +28,24 @@ const schema = new Schema({
     tags: [String], // web,development, front
     created: { type: Date, default: Date.now },
     updated: Date,
-    url_picture:String,
+    url_picture: String,
     chat: [{
         accountId: { type: Schema.Types.ObjectId, required: true },
         content: String,
         created: { type: Date, default: Date.now },
     }],
-    visits:[
+    visits: [
         {
             accountId: { type: Schema.Types.ObjectId, required: true },
-            lastVisitedSection:String, //Last section that the user have visited
-            occurences:[
+            lastVisitedSection: String, //Last section that the user have visited
+            occurences: [
                 {
-                    created:{ type: Date, default: Date.now },
+                    created: { type: Date, default: Date.now },
                 }
             ]
         }
-    ]
+    ],
+    labsConfiguration: { images: [String], templates: [String] }
 });
 
 

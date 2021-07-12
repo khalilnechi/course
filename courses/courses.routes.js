@@ -157,6 +157,7 @@ const schema = Joi.object({
     rating: Joi.array(),
     comments: Joi.array(),
     tags: Joi.array(),
+    labsConfiguration: Joi.object()
 });
 /*************************************create*********************************************** */
 function createSchema(req, res, next) {
