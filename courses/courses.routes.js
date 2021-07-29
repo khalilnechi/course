@@ -12,7 +12,7 @@ const authorize = require('../_middleware/authorize')
 router.get('/test', test);
 router.get('/delete_chat/:id', delete_chat);
 router.post('/title', authorize(), getByTitle);
-router.get('/', authorize(), getAll);
+router.get('/', authorize(), getAllValid);
 router.get('/getMyCourses', authorize(), getMyCourses);
 router.get('/:id', authorize(), getById);
 router.post('/', createSchema, create);
@@ -61,8 +61,8 @@ function getMyCourses(req, res, next) {
         .catch(next);
 }
 
-function getAll(req, res, next) {
-    courseService.getAll()
+function getAllValid(req, res, next) {
+    courseService.getAllValid()
         .then(courses => res.json(courses))
         .catch(next);
 }

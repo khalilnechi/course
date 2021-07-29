@@ -5,7 +5,7 @@ Logger = require('../_helpers/logger');
 
 module.exports = {
     getByTitle,
-    getAll,
+    getAllValid,
     getById,
     create,
     update,
@@ -39,8 +39,8 @@ async function delete_chat(idCourse, user) {
 
     return "deleted " + nbMsg + " messages";
 }
-async function getAll() {
-    const courses = await db.Course.find();
+async function getAllValid() {
+    const courses = await db.Course.find({ valid: true });
     return courses.map(x => basicDetailsCourses(x));
 }
 
@@ -61,9 +61,14 @@ async function getById(idCourse, user) {
     //console.log("course.owner=" +typeof course.owner)
     let isAdminOfCourse = user.id === course.owner.toString()
     console.log("isAdminOfCourse=" + isAdminOfCourse)
-
+    let isVisitor = (user !== undefined && !isAdminOfCourse && course.trainers.indexOf(user.id) === -1);
+    console.log("isVisitor = " + isVisitor)
+    if (isVisitor && user.role!=="Admin" && !course.valid) {
+        console.log("The course still invalid !!")
+        throw "Course not valid"
+    }
     //Storage of visits
-    if (user !== undefined && !isAdminOfCourse && course.trainers.indexOf(user.id) === -1) {
+    if (isVisitor) {
         //console.log(course.visits)
         console.log("getting course by visitor with id " + user.id)
         console.log("course.visits.find(visit=>visit.accountId===user.id)")
@@ -226,7 +231,7 @@ async function update(idCourse, params) {
 async function _delete(idCourse, user) {
     const course = await getCourse(idCourse);
     console.log(user.role)
-    if (user.id === course.owner.toString() || user.role==="Admin") {
+    if (user.id === course.owner.toString() || user.role === "Admin") {
 
         await course.remove();
         return 'Course deleted successfully';

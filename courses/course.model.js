@@ -45,7 +45,8 @@ const schema = new Schema({
             ]
         }
     ],
-    labsConfiguration: { images: [String], templates: [String] }
+    labsConfiguration: { images: [String], templates: [String] },
+    valid:{ type: Boolean, default: false },
 });
 
 
