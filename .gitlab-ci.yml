@@ -1,6 +1,7 @@
 stages:
     - Build
     - Deploy
+
 Packaging:
   stage: Build
   image: docker
