@@ -1,55 +1,58 @@
 /**************
  * 
- *  BASIC_API 
+ *  Couses API
  *
  * ************************* */
- require('rootpath')();
+require('rootpath')();
 
- const express = require('express');
- const app = express();
- const bodyParser = require('body-parser');
- const cookieParser = require('cookie-parser');
- const cors = require('cors');
- const errorHandler = require('./_middleware/error-handler')
- 
- app.use(bodyParser.urlencoded({ extended: false }));
- app.use(bodyParser.json());
- app.use(cookieParser());
- // app.use(cors());
- var corsOptions = { 
-     credentials: true,
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const errorHandler = require('./_middleware/error-handler')
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+// app.use(cors());
+var corsOptions = {
+    credentials: true,
     // origin: ['http://localhost:4200','https://dev.canbe.fun','http://localhost:3000'] // list of allowed clients 
-     //methods: "GET, PUT" // list of allowed methods (used in the microservice of file upload)
- }
- app.use(cors(corsOptions));
- 
- 
- // api routes
- app.use('/courses', require('./courses/courses.routes'));
- // Health Check route
- app.use('/healthz', require('./_middleware/healthcheck.route'));
- // swagger docs route
- app.use('/api-docs', require('./_helpers/swagger'));
- 
- // global error handler
- app.use(errorHandler);
- 
- // start server
- var port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3100;
- 
- const server = app.listen(port, () => {
-     console.log('Server listening on port ' + port);
- });
+    //methods: "GET, PUT" // list of allowed methods (used in the microservice of file upload)
+}
+app.use(cors(corsOptions));
+
+
+// api routes
+app.use('/courses', require('./courses/courses.routes'));
+// Health Check route
+app.use('/healthz', require('./_middleware/healthcheck.route'));
+// swagger docs route
+if (process.env.NODE_ENV === "dev") {
+    app.use('/api-docs', require('./_helpers/swagger'));
+}
+
+
+// global error handler
+app.use(errorHandler);
+
+// start server
+var port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3100;
+
+const server = app.listen(port, () => {
+    console.log('Server listening on port ' + port);
+});
 
 /*------------------------------------------------------------------------------------------ */
- 
+
 const db = require('./_helpers/db');
- // Socket Layer over Http Server
+// Socket Layer over Http Server
 const socketio = require('socket.io')(server);
 // On every Client Connection
 socketio.on('connection', async (socket) => {
     console.log('Socket: client connected');
-    
+
     var courseId = socket.handshake.query.courseId;
     console.log(courseId)
     const course = await getCourse(courseId);
@@ -58,11 +61,11 @@ socketio.on('connection', async (socket) => {
     //console.log(socket)
     socket.on('message', async (msg) => {
         console.log('received message:' + JSON.stringify(msg));
-        let message={
-            accountId:msg.accountId,
-            content:msg.content
+        let message = {
+            accountId: msg.accountId,
+            content: msg.content
         }
-        await add_message(courseId,message)
+        await add_message(courseId, message)
         socketio.emit("chat", msg);
     });
 });
@@ -89,5 +92,5 @@ async function add_message(idCourse, message) {
 
     return basicDetails(course);
 }
- 
- module.exports = app;
+
+module.exports = app;

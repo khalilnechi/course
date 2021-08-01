@@ -2,7 +2,7 @@ const db = require('./../_helpers/db');
 var fs = require('fs');
 var jwt =require('jsonwebtoken');
 Logger=require('../_helpers/logger');
-logger=new Logger('Api courses');
+logger=new Logger('Courses Api');
 
 var public_key=fs.readFileSync('./public-key.txt','utf8');
 module.exports = authorize;
@@ -11,7 +11,7 @@ function authorize(roles = []) {
     // roles param can be a single role string (e.g. Role.User or 'User') 
     // or an array of roles (e.g. [Role.Admin, Role.User] or ['Admin', 'User'])
 
-    console.log("------------------authorize()-------------")
+    // console.log("------------------authorize()-------------")
     if (typeof roles === 'string') {
         roles = [roles];
     }
