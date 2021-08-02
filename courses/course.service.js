@@ -6,6 +6,7 @@ Logger = require('../_helpers/logger');
 module.exports = {
     getByTitle,
     getAllValid,
+    getAll,
     getById,
     create,
     update,
@@ -43,7 +44,10 @@ async function getAllValid() {
     const courses = await db.Course.find({ valid: true });
     return courses.map(x => basicDetailsCourses(x));
 }
-
+async function getAll() {
+    const courses = await db.Course.find();
+    return courses.map(x => basicDetailsCourses(x));
+}
 async function getMyCourses(idAccount) {
     const courses = await db.Course.find({
         $or: [

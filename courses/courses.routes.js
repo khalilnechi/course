@@ -12,7 +12,8 @@ const authorize = require('../_middleware/authorize')
 router.get('/test', test);
 router.get('/delete_chat/:id', delete_chat);
 router.post('/title', authorize(), getByTitle);
-router.get('/', authorize(), getAllValid);
+router.get('/', authorize(), getAll);
+router.get('/getAllValid', authorize(), getAllValid);
 router.get('/getMyCourses', authorize(), getMyCourses);
 router.get('/:id', authorize(), getById);
 router.post('/', createSchema, create);
@@ -66,7 +67,11 @@ function getAllValid(req, res, next) {
         .then(courses => res.json(courses))
         .catch(next);
 }
-
+function getAll(req, res, next) {
+    courseService.getAll()
+        .then(courses => res.json(courses))
+        .catch(next);
+}
 function getById(req, res, next) {
     // users can get their own course and admins can get any course
     /* if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
