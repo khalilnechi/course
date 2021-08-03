@@ -265,7 +265,7 @@ function basicDetails(course) {
 }
 
 function basicDetailsCourses(course) {
-    const { _id, title, topic, owner, created, updated, tags, url_picture } = course;
+    const { _id, title, topic, owner, created, updated, tags, url_picture, valid } = course;
     // return course;
-    return { _id, title, topic, owner, created, updated, tags, url_picture };
+    return { _id, title, topic, owner, created, updated, tags, url_picture, valid };
 }

@@ -9,7 +9,6 @@ const authorize = require('../_middleware/authorize')
 /****************************************************************************************** */
 /****************************************************************************************** */
 // routes
-router.get('/test', test);
 router.get('/delete_chat/:id', delete_chat);
 router.post('/title', authorize(), getByTitle);
 router.get('/', authorize(), getAll);
@@ -31,13 +30,6 @@ module.exports = router;
 /****************************************************************************************** */
 /****************************************************************************************** */
 /****************************************************************************************** */
-function test(req, res, next) {
-    console.log("hello--------------------")
-    res.json({ name: "khalil" });
-
-}
-
-
 function delete_chat(req, res, next) {
     courseService.delete_chat(req.params.id, req.user).then((message) => {
         res.json({
@@ -162,7 +154,8 @@ const schema = Joi.object({
     rating: Joi.array(),
     comments: Joi.array(),
     tags: Joi.array(),
-    labsConfiguration: Joi.object()
+    labsConfiguration: Joi.object(),
+    valid:Joi.boolean()
 });
 /*************************************create*********************************************** */
 function createSchema(req, res, next) {

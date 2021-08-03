@@ -5,7 +5,7 @@ const schema = new Schema({
     title: { type: String, required: true },
     topic: { type: String, required: true },
     owner: { type: Schema.Types.ObjectId, required: true },
-    active: { type: Boolean, required: true, default: false },
+    //active: { type: Boolean, required: true, default: false },
     trainers: [Schema.Types.ObjectId],
     sections: [{
         addedBy: { type: Schema.Types.ObjectId, required: true },
